@@ -33,7 +33,14 @@ public class PossiblePuzzleShapes : MonoBehaviour
     private bool[,] twoHorizontal = new bool[5,5];
     private bool[,] threeVertical = new bool[5,5];
     private bool[,] threeHorizontal = new bool[5,5];
-
+    private bool[,] fourHorizontal = new bool[5,5];
+    private bool[,] fourVerticla = new bool[5,5];
+    private bool[,] fiveHorizontal = new bool[5,5];
+    private bool[,] fiveVerticla = new bool[5,5];
+    private bool[,] squareSmall = new bool[5,5];
+    private bool[,] squareBig = new bool[5,5];
+    
+    
 
 
     public void Awake()
@@ -54,6 +61,45 @@ public class PossiblePuzzleShapes : MonoBehaviour
         threeVertical[2,1] = true;
         threeVertical[2,3] = true;
         allShapes.Add(threeVertical);
+        fourHorizontal[2,2] = true;
+        fourHorizontal[3,2] = true;
+        fourHorizontal[1,2] = true;
+        fourHorizontal[0,2] = true;
+        allShapes.Add(fourHorizontal);
+        fourVerticla[2,2] = true;
+        fourVerticla[2,3] = true;
+        fourVerticla[2,1] = true;
+        fourVerticla[2,0] = true;
+        allShapes.Add(fourVerticla);
+        fiveHorizontal[2,2] = true;
+        fiveHorizontal[3,2] = true;
+        fiveHorizontal[4,2] = true;
+        fiveHorizontal[1,2] = true;
+        fiveHorizontal[0,2] = true;
+        allShapes.Add(fiveHorizontal);
+        fiveVerticla[2,2] = true;
+        fiveVerticla[2,3] = true;
+        fiveVerticla[2,4] = true;
+        fiveVerticla[2,1] = true;
+        fiveVerticla[2,0] = true;
+        allShapes.Add(fiveVerticla);
+        squareSmall[2,2] = true;
+        squareSmall[2,3] = true;
+        squareSmall[3,2] = true;
+        squareSmall[3,3] = true;
+        allShapes.Add(squareSmall);
+        allShapes.Add(squareSmall);
+        squareBig[2,2] = true;
+        squareBig[3,2] = true;
+        squareBig[2,3] = true;
+        squareBig[3,3] = true;
+        squareBig[1,2] = true;
+        squareBig[2,1] = true;
+        squareBig[1,1] = true;
+        squareBig[1,3] = true;
+        squareBig[3,1] = true;
+        allShapes.Add(squareBig);
+
     }
     public SpriteNames[,] GeneratePattern()
     {
