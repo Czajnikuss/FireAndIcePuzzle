@@ -9,7 +9,7 @@ public class PuzzlePieceShower : MonoBehaviour
     public Grid<SpriteGridObject> puzzleGrid, holderGrid;
     public int width =5, hight=5;
     public float cellSize, holderCellSize;
-    public Sprite[] sprites;
+    private Sprite[] sprites;
     public GameObject gridCellPrefab, holderCellPrefab;
     public Vector3 scaleOfCell, holderScaleOfCell;
     public SpriteNames[,] puzzleLayout = new SpriteNames[5,5];
@@ -23,7 +23,10 @@ public class PuzzlePieceShower : MonoBehaviour
         
         
     //debug
-    startingPoint = transform.position;    
+
+    startingPoint = transform.position;   
+    sprites = AssetsStorage.Instance.spritesShower;
+     
     //set holder grid
         holderGrid = new Grid<SpriteGridObject>(width, hight, holderCellSize, transform.position + new Vector3(-(width/2f)* holderCellSize,-(hight/2f)*holderCellSize, 0), (Grid<SpriteGridObject> g, int x, int y) => new SpriteGridObject(g, x, y, sprites, holderCellPrefab, holderScaleOfCell));
         holderGrid.SetAllGridElementsAsChildren(this.transform);

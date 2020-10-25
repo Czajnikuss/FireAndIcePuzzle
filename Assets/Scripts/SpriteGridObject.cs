@@ -27,7 +27,7 @@ public class SpriteGridObject :MonoBehaviour
     
 
     public SpriteNames thisSpriteName;
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     GameObject tempObject;
     public AfiliateElement afiliateElement;
    [SerializeField] private Animation cellAnimation;
@@ -85,7 +85,8 @@ public class SpriteGridObject :MonoBehaviour
         grid.gridArray[x,y] = this;
         grid.TriggerOnGridObjectChange(x, y);
     }
-    public void playFadeInAnim()
+    
+    public void PlayFadeInAnim()
     {
         if(afiliateElement == AfiliateElement.fire)
         {
@@ -111,7 +112,10 @@ public class SpriteGridObject :MonoBehaviour
    
     
 #region "Empty"
-    
+public void PlayFadeOutfromEmpty()
+    {
+        cellAnimation.Play("FadeOutEmpty");
+    }    
     
 #endregion
 

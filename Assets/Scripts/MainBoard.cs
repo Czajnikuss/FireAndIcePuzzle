@@ -7,9 +7,10 @@ using TMPro;
 public class MainBoard : MonoBehaviour
 {
     public Grid<SpriteGridObject> mainBoardGrid;
+    private List<bool> ListOfOngoingChanges = new List<bool>();
     public int width, hight;
     public float cellSize;
-    public Sprite[] sprites;
+    private Sprite[] sprites;
     public GameObject gridCellPrefab;
     public Vector3 scaleOfCell;
 
@@ -33,6 +34,7 @@ public class MainBoard : MonoBehaviour
     
     void Start()
     {
+        sprites = AssetsStorage.Instance.spritesMain;
         lostPanel.SetActive(false);
         mainBoardGrid = new Grid<SpriteGridObject>(width, hight, cellSize, transform.position, (Grid<SpriteGridObject> g, int x, int y) => new SpriteGridObject(g, x, y, sprites, gridCellPrefab, scaleOfCell));
         mainBoardGrid.SetAllGridElementsAsChildren(this.transform);
@@ -135,13 +137,37 @@ public class MainBoard : MonoBehaviour
             dropedShower.GoodFit();
             foreach (var item in goodCoordinates)
             {
-                mainBoardGrid.gridArray[item[0], item[1]].SetSpriteName((int)dropedShower.thisPuzzleType);
-                mainBoardGrid.gridArray[item[0], item[1]].playFadeInAnim();
+                
+                ListOfOngoingChanges.Add(new bool());
+                StartCoroutine(PlayAnimCycleFromEmpty(mainBoardGrid.gridArray[item[0], item[1]], dropedShower.thisPuzzleType));
+               // mainBoardGrid.gridArray[item[0], item[1]].SetSpriteName((int)dropedShower.thisPuzzleType);
+               // mainBoardGrid.gridArray[item[0], item[1]].playFadeInAnim();
             }
             MoveMade();
         }
         BadFitForSure:
         if(probablyBadFit) dropedShower.BadFit();
+    }
+    private IEnumerator PlayAnimCycleFromEmpty(SpriteGridObject objectToPlayOn, SpriteNames newSpriteName)
+    {
+        objectToPlayOn.PlayFadeOutfromEmpty();
+        yield return  new WaitForSecondsRealtime(0.45f);
+        objectToPlayOn.SetSpriteName((int)newSpriteName);
+        
+        objectToPlayOn.PlayFadeInAnim();
+        yield return new WaitForSecondsRealtime(0.45f);
+        if(ListOfOngoingChanges.Count >1)
+        ListOfOngoingChanges.RemoveAt(ListOfOngoingChanges.Count-1);
+        else if(ListOfOngoingChanges.Count>0)
+        {
+            ListOfOngoingChanges.RemoveAt(ListOfOngoingChanges.Count-1);
+           // Debug.Log("chackin");
+            CheckElementsInteractions();
+        }
+        else CheckElementsInteractions();
+
+        yield return null;    
+        
     }
 
     public void MoveMade()
@@ -226,7 +252,8 @@ public class MainBoard : MonoBehaviour
         FirePointShow();
         IcePointShow();
         //any remaining cells check for naiboring oposite types and act on it
-        CheckElementsInteractions();
+    //moved to animation coorutine
+    //    CheckElementsInteractions();
         //find out are all showers empty if so generate random puzzle
         allAwaiting = true;
         foreach (var item in allShowers)
@@ -306,7 +333,7 @@ public class MainBoard : MonoBehaviour
                         {
                             //we have possible next move
                             movePossible = true;
-                            Debug.Log("next move");
+                            //Debug.Log("next move");
                             goto gotNextMove;
                         }
                     }
@@ -366,8 +393,8 @@ public class MainBoard : MonoBehaviour
             foreach (var item in fireDownList)
             {
                 firePoints-=pointsForFullFire;
-                
-                item.FireDown();
+                StartCoroutine(ExtinquishAmin(item));
+                //item.FireDown();
             }
             FirePointShow();
         }
@@ -376,25 +403,46 @@ public class MainBoard : MonoBehaviour
             foreach (var item in iceMeltList)
             {
                 icePoints-=pointsForFullIce;
-                item.IceMelt();
+                StartCoroutine(MeltAmin(item));
+                //item.IceMelt();
             }
             IcePointShow();
         }
     }
+    private IEnumerator MeltAmin(SpriteGridObject animOnIt)
+    {
+        for (int i = 0; i < AssetsStorage.Instance.meltAminSprites.Length; i++)
+        {
+            animOnIt.spriteRenderer.sprite = AssetsStorage.Instance.meltAminSprites[i];
+            yield return new WaitForSeconds(0.2f);
+        }
+        animOnIt.SetSpriteName(0);
+        yield return null;
+    }
+    private IEnumerator ExtinquishAmin(SpriteGridObject animOnIt)
+    {
+        for (int i = 0; i < AssetsStorage.Instance.extinguishAminSprites.Length; i++)
+        {
+            animOnIt.spriteRenderer.sprite = AssetsStorage.Instance.extinguishAminSprites[i];
+            yield return new WaitForSeconds(0.2f);
+        }
+        animOnIt.SetSpriteName(0);
+        yield return null;
+    }
     private void FirePointShow()
     {
-        firePointsText.text = "Fire \n " + firePoints.ToString();
+        firePointsText.text =  firePoints.ToString();
         TotalPointShow();
     }
     private void IcePointShow()
     {
-        icePointsText.text = "Ice \n " + icePoints.ToString();
+        icePointsText.text =   icePoints.ToString();
         TotalPointShow();
     }
     private void TotalPointShow()
     {
         totalPoints = (firePoints + icePoints) - Mathf.Abs(firePoints-icePoints);
-        totalPointsText.text = "Total \n " + totalPoints.ToString();
+        totalPointsText.text =  totalPoints.ToString();
         
     }
     public void Restart()

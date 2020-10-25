@@ -24,8 +24,8 @@ public class AppodealHandle : MonoBehaviour, IRewardedVideoAdListener
     }
 
     string thisStore;
-    const string GooglePlayAppKey ="5357145b6d2bf5264b19d4ef1ee27efbae1d9ca308eea3a2";
-    const string AmazonAppKey = "42462e889282c8dd2a98bdf883d82461f3dce2a7c4a234a5";
+    const string GooglePlayAppKey ="970125f0228c3467e4d1068f25d98ed4cfd17e1aa5208b3a";
+    const string AmazonAppKey = "";
 
 #region SINGLETON PATTERN
  public static AppodealHandle _instance;
@@ -58,6 +58,8 @@ public class AppodealHandle : MonoBehaviour, IRewardedVideoAdListener
     
     [Header("Ads Problems")]
     public GameObject notShowingTryAgainPanel;
+    [Header("Baner Elements")]
+    public GameObject bannerGameObject;
     
     void Start()
     {
@@ -85,8 +87,9 @@ public class AppodealHandle : MonoBehaviour, IRewardedVideoAdListener
     }
     private void  ShowConscentWindow()
     {
-        conscentWindow.SetActive(true);
-        mainPanel.SetActive(false);
+        conscentWindow?.SetActive(true);
+        
+        mainPanel?.SetActive(false);
     }
     public void YesPressed()
     {
@@ -96,8 +99,8 @@ public class AppodealHandle : MonoBehaviour, IRewardedVideoAdListener
         
         Appodeal.updateConsent(consentValue);
         
-        mainPanel.SetActive(true);
-        conscentWindow.SetActive(false);
+        mainPanel?.SetActive(true);
+        conscentWindow?.SetActive(false);
     }
     public void NoPressed()
     {
@@ -107,8 +110,8 @@ public class AppodealHandle : MonoBehaviour, IRewardedVideoAdListener
         
         Appodeal.updateConsent(consentValue);
         
-        mainPanel.SetActive(true);
-        conscentWindow.SetActive(false);
+        mainPanel?.SetActive(true);
+        conscentWindow?.SetActive(false);
     }
      /* "personalizes your advertising experience using Appodeal. " +
         Appodeal and its partners may collect and process personal data such as device identifiers, 

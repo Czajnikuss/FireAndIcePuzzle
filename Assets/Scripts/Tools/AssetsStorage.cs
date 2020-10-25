@@ -43,9 +43,26 @@ public class AssetsStorage : MonoBehaviour
     [Space]
     [Header("Sprites")]
     [Space]
-
+    public Sprite[] spritesMain;
+    public Sprite[] spritesShower;
+    public Sprite ingYangSprite;
     public Sprite emptySprite;
     public Sprite fireFullyFilledSprite;
     public Sprite iceFullyFilledSprite;
+    public Sprite[] meltAminSprites;
+    public Sprite[] extinguishAminSprites;
+
+
+    private void Awake() {
+        spritesMain = new Sprite[3];
+        spritesMain[0] = emptySprite;
+        spritesMain[1] = fireFullyFilledSprite;
+        spritesMain[2] = iceFullyFilledSprite;
+
+        spritesShower = new Sprite[3];
+        spritesShower[0] = null;
+        spritesShower[1] = fireFullyFilledSprite;
+        spritesShower[2] = iceFullyFilledSprite;
+    }
 
 }
